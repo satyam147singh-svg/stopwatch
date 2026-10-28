@@ -1,0 +1,43 @@
+{
+  "name": "ChronoSync - Clock, Timer & Alarm",
+  "short_name": "ChronoSync",
+  "description": "Ultra-sleek all-in-one Clock, Precision Stopwatch, Countdown Timer and Smart Alarm with customizable ringtones and world time.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0d14",
+  "theme_color": "#06b6d4",
+  "categories": ["utilities", "productivity", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon-192.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Stopwatch",
+      "url": "./index.html?tab=stopwatch",
+      "description": "Quickly open the precision stopwatch"
+    },
+    {
+      "name": "Timer",
+      "url": "./index.html?tab=timer",
+      "description": "Quickly start a countdown timer"
+    },
+    {
+      "name": "Alarm",
+      "url": "./index.html?tab=alarm",
+      "description": "Set and manage your alarms"
+    }
+  ]
+}

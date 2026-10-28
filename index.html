@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0d14">
+  <meta name="description" content="ChronoSync - Ultra-sleek all-in-one Clock, Precision Stopwatch, Countdown Timer, and Smart Alarm with customizable ringtones and world time.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ChronoSync | Clock, Timer, Alarm & Stopwatch</title>
+  
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/jpeg" href="icon-192.jpg">
+  <link rel="apple-touch-icon" href="icon-192.jpg">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Modern Typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="cyber">
+  <!-- Dynamic Ambient Background Glows -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+    
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-logo-wrap">
+          <img src="icon-192.jpg" alt="ChronoSync Logo" class="brand-icon" id="brand-logo-img">
+          <span class="brand-pulse"></span>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">CHRONO<span class="accent-text">SYNC</span></h1>
+          <span class="brand-subtitle">PRO TIME SUITE</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Sound Mute/Active Toggle -->
+        <button class="icon-btn" id="sound-toggle-btn" title="Toggle Sound Feedback" aria-label="Toggle Sound">
+          <svg class="svg-icon" id="sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg class="svg-icon hidden" id="sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Theme Switcher Menu Button -->
+        <button class="icon-btn" id="theme-btn" title="Change Visual Theme" aria-label="Change Theme">
+          <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- Fullscreen Toggle -->
+        <button class="icon-btn" id="fullscreen-btn" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+          <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Theme Selection Drawer / Dropdown -->
+    <div class="theme-dropdown hidden" id="theme-dropdown">
+      <div class="theme-title">Color Theme</div>
+      <div class="theme-options">
+        <button class="theme-opt-btn active" data-theme-val="cyber">
+          <span class="theme-dot dot-cyber"></span> Cyber Cyan
+        </button>
+        <button class="theme-opt-btn" data-theme-val="sunset">
+          <span class="theme-dot dot-sunset"></span> Solar Amber
+        </button>
+        <button class="theme-opt-btn" data-theme-val="violet">
+          <span class="theme-dot dot-violet"></span> Neon Violet
+        </button>
+        <button class="theme-opt-btn" data-theme-val="emerald">
+          <span class="theme-dot dot-emerald"></span> Matrix Emerald
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Alarm Notification Toast Bar (shows when an alarm is within 1 hour) -->
+    <div class="upcoming-banner hidden" id="upcoming-banner">
+      <div class="upcoming-content">
+        <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="13" r="8"></circle>
+          <path d="M12 9v4l2 2"></path>
+          <path d="M5 3L2 6"></path>
+          <path d="M22 6l-3-3"></path>
+        </svg>
+        <span id="upcoming-text">Next alarm in 4 hours 12 mins</span>
+      </div>
+    </div>
+
+    <!-- MAIN APP CONTENT PANELS -->
+    <main class="main-content">
+      
+      <!-- ================= 1. CLOCK VIEW ================= -->
+      <section class="tab-panel active" id="tab-clock" role="tabpanel" aria-labelledby="nav-clock">
+        
+        <!-- Analog Clock Canvas Display -->
+        <div class="clock-visual-container">
+          <div class="analog-clock-wrapper">
+            <canvas id="analog-canvas" width="280" height="280"></canvas>
+            <div class="clock-ambient-ring"></div>
+          </div>
+        </div>
+
+        <!-- Sleek Digital Time Display -->
+        <div class="digital-clock-card">
+          <div class="digital-time-row">
+            <span class="digital-time" id="clock-digital-time">12:00:00</span>
+            <span class="digital-ampm" id="clock-digital-ampm">PM</span>
+          </div>
+          <div class="digital-date" id="clock-digital-date">Wednesday, October 28, 2026</div>
+          
+          <div class="clock-meta-row">
+            <button class="toggle-pill-btn" id="format-toggle-btn" title="Toggle 12h / 24h format">
+              <span id="format-label">24H MODE</span>
+            </button>
+            <div class="timezone-badge" id="current-timezone-badge">
+              <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span id="local-timezone-text">Local Time</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- World Clock Section -->
+        <div class="world-clock-container">
+          <div class="section-header">
+            <h2 class="section-title">World Clocks</h2>
+            <button class="btn-secondary-sm" id="add-city-btn">
+              <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add City
+            </button>
+          </div>
+
+          <div class="world-cities-grid" id="world-cities-list">
+            <!-- Dynamic World City Cards populated by JS -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 2. ALARM VIEW ================= -->
+      <section class="tab-panel" id="tab-alarm" role="tabpanel" aria-labelledby="nav-alarm">
+        
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Alarms</h2>
+            <p class="section-desc">Manage wake-ups & daily reminders</p>
+          </div>
+          <button class="btn-primary" id="open-alarm-modal-btn">
+            <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            New Alarm
+          </button>
+        </div>
+
+        <!-- Alarms List Container -->
+        <div class="alarms-list" id="alarms-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+      </section>
+
+      <!-- ================= 3. STOPWATCH VIEW ================= -->
+      <section class="tab-panel" id="tab-stopwatch" role="tabpanel" aria-labelledby="nav-stopwatch">
+        
+        <div class="stopwatch-display-card">
+          <!-- Glowing circular progress border -->
+          <div class="stopwatch-halo" id="stopwatch-halo"></div>
+          
+          <div class="stopwatch-numbers-wrapper">
+            <div class="stopwatch-main-time" id="sw-display">00:00:00<span class="sw-ms" id="sw-display-ms">.00</span></div>
+            <div class="stopwatch-sub-lap" id="sw-current-lap-time">Lap: 00:00:00.00</div>
+          </div>
+        </div>
+
+        <!-- Stopwatch Controls -->
+        <div class="control-actions-row">
+          <button class="circle-action-btn btn-amber" id="sw-lap-btn" disabled>
+            <span class="btn-inner-text">Lap</span>
+          </button>
+
+          <button class="circle-action-btn btn-neon-play" id="sw-start-btn">
+            <span class="btn-inner-text" id="sw-start-label">Start</span>
+          </button>
+
+          <button class="circle-action-btn btn-rose" id="sw-reset-btn" disabled>
+            <span class="btn-inner-text">Reset</span>
+          </button>
+        </div>
+
+        <!-- Laps Section -->
+        <div class="laps-container" id="laps-section">
+          <div class="laps-header">
+            <span class="laps-title">Recorded Laps (<span id="laps-count">0</span>)</span>
+            <div class="laps-quick-actions">
+              <button class="text-link-btn" id="copy-laps-btn" title="Copy laps to clipboard">Copy</button>
+              <button class="text-link-btn text-danger" id="clear-laps-btn" title="Clear all recorded laps">Clear</button>
+            </div>
+          </div>
+
+          <div class="laps-table-wrapper">
+            <table class="laps-table" id="laps-table">
+              <thead>
+                <tr>
+                  <th>Lap</th>
+                  <th>Split Time</th>
+                  <th>Total Time</th>
+                </tr>
+              </thead>
+              <tbody id="laps-tbody">
+                <!-- Dynamic lap rows -->
+              </tbody>
+            </table>
+            <div class="empty-state" id="empty-laps-state">
+              <p>No laps recorded yet. Press Start, then Lap.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= 4. TIMER VIEW ================= -->
+      <section class="tab-panel" id="tab-timer" role="tabpanel" aria-labelledby="nav-timer">
+        
+        <!-- Circular Progress Ring Display -->
+        <div class="timer-visual-container">
+          <svg class="timer-ring-svg" viewBox="0 0 320 320">
+            <!-- Background track -->
+            <circle class="timer-track" cx="160" cy="160" r="140"></circle>
+            <!-- Progress indicator bar -->
+            <circle class="timer-progress" id="timer-progress-ring" cx="160" cy="160" r="140"></circle>
+          </svg>
+
+          <!-- Inside Ring Content -->
+          <div class="timer-center-content">
+            <div class="timer-digits" id="timer-display">05:00</div>
+            <div class="timer-total-caption" id="timer-status-caption">Ready</div>
+          </div>
+        </div>
+
+        <!-- Quick Time Presets Chips -->
+        <div class="timer-presets-scroll">
+          <button class="preset-chip" data-seconds="60">1 min</button>
+          <button class="preset-chip" data-seconds="180">3 min</button>
+          <button class="preset-chip active" data-seconds="300">5 min</button>
+          <button class="preset-chip" data-seconds="600">10 min</button>
+          <button class="preset-chip" data-seconds="900">15 min</button>
+          <button class="preset-chip" data-seconds="1500">25 min (Pomodoro)</button>
+          <button class="preset-chip" data-seconds="1800">30 min</button>
+          <button class="preset-chip" data-seconds="3600">60 min</button>
+        </div>
+
+        <!-- Custom Duration Quick Pickers -->
+        <div class="custom-timer-pickers" id="custom-timer-inputs">
+          <div class="time-picker-col">
+            <label for="timer-input-hours">HOURS</label>
+            <input type="number" id="timer-input-hours" min="0" max="99" value="0" class="time-num-input">
+          </div>
+          <span class="colon-separator">:</span>
+          <div class="time-picker-col">
+            <label for="timer-input-mins">MINUTES</label>
+            <input type="number" id="timer-input-mins" min="0" max="59" value="5" class="time-num-input">
+          </div>
+          <span class="colon-separator">:</span>
+          <div class="time-picker-col">
+            <label for="timer-input-secs">SECONDS</label>
+            <input type="number" id="timer-input-secs" min="0" max="59" value="0" class="time-num-input">
+          </div>
+        </div>
+
+        <!-- Timer Controls -->
+        <div class="control-actions-row">
+          <button class="circle-action-btn btn-rose" id="timer-reset-btn" disabled>
+            <span class="btn-inner-text">Reset</span>
+          </button>
+
+          <button class="circle-action-btn btn-neon-play" id="timer-start-btn">
+            <span class="btn-inner-text" id="timer-start-label">Start</span>
+          </button>
+
+          <button class="circle-action-btn btn-cyan" id="timer-add-min-btn" title="Add 1 minute" disabled>
+            <span class="btn-inner-text">+1m</span>
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Dock (Ergonomic Mobile / Desktop) -->
+    <nav class="bottom-nav" role="tablist">
+      <button class="nav-item active" id="nav-clock" data-tab="tab-clock" role="tab" aria-selected="true">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span class="nav-label">Clock</span>
+      </button>
+
+      <button class="nav-item" id="nav-alarm" data-tab="tab-alarm" role="tab" aria-selected="false">
+        <div class="nav-icon-wrap">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="13" r="8"></circle>
+            <path d="M12 9v4l2 2"></path>
+            <path d="M5 3L2 6"></path>
+            <path d="M22 6l-3-3"></path>
+            <path d="M6.38 18.7 4 21"></path>
+            <path d="M17.64 18.67 20 21"></path>
+          </svg>
+          <span class="alarm-badge hidden" id="active-alarms-badge">0</span>
+        </div>
+        <span class="nav-label">Alarm</span>
+      </button>
+
+      <button class="nav-item" id="nav-stopwatch" data-tab="tab-stopwatch" role="tab" aria-selected="false">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="14" r="8"></circle>
+          <line x1="12" y1="2" x2="12" y2="6"></line>
+          <line x1="10" y1="2" x2="14" y2="2"></line>
+          <line x1="12" y1="14" x2="15.5" y2="10.5"></line>
+        </svg>
+        <span class="nav-label">Stopwatch</span>
+      </button>
+
+      <button class="nav-item" id="nav-timer" data-tab="tab-timer" role="tab" aria-selected="false">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10 2h4"></path>
+          <path d="M12 14v-4"></path>
+          <path d="M4 13a8 8 0 0 1 8-7 8 8 0 1 1-5.3 14L4 17.6"></path>
+        </svg>
+        <span class="nav-label">Timer</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ================= MODALS & OVERLAYS ================= -->
+
+  <!-- 1. Add/Edit Alarm Modal -->
+  <div class="modal-overlay hidden" id="alarm-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="alarm-modal-title">Set Alarm</h3>
+        <button class="icon-btn-close" id="close-alarm-modal-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Interactive Time Wheel / Inputs -->
+        <div class="alarm-time-picker">
+          <div class="picker-input-group">
+            <input type="number" id="alarm-input-hours" class="time-digit-input" min="1" max="12" value="07">
+            <span class="picker-separator">:</span>
+            <input type="number" id="alarm-input-mins" class="time-digit-input" min="0" max="59" value="00">
+          </div>
+          <div class="ampm-toggle-group" id="alarm-ampm-group">
+            <button class="ampm-btn active" id="ampm-am" type="button">AM</button>
+            <button class="ampm-btn" id="ampm-pm" type="button">PM</button>
+          </div>
+        </div>
+
+        <!-- Alarm Label Input -->
+        <div class="form-group">
+          <label for="alarm-label-input">Label</label>
+          <input type="text" id="alarm-label-input" class="form-input" placeholder="e.g. Morning Workout, Daily Meeting" maxlength="32">
+        </div>
+
+        <!-- Repeat Days -->
+        <div class="form-group">
+          <label>Repeat Days</label>
+          <div class="days-chips-row">
+            <button type="button" class="day-chip" data-day="0">S</button>
+            <button type="button" class="day-chip active" data-day="1">M</button>
+            <button type="button" class="day-chip active" data-day="2">T</button>
+            <button type="button" class="day-chip active" data-day="3">W</button>
+            <button type="button" class="day-chip active" data-day="4">T</button>
+            <button type="button" class="day-chip active" data-day="5">F</button>
+            <button type="button" class="day-chip" data-day="6">S</button>
+          </div>
+          <div class="repeat-presets">
+            <button type="button" class="preset-text-btn" id="repeat-weekdays">Weekdays</button>
+            <button type="button" class="preset-text-btn" id="repeat-weekends">Weekends</button>
+            <button type="button" class="preset-text-btn" id="repeat-everyday">Everyday</button>
+          </div>
+        </div>
+
+        <!-- Tone Selector with Sound Preview Button -->
+        <div class="form-group">
+          <label for="alarm-sound-select">Ringtone</label>
+          <div class="sound-select-row">
+            <select id="alarm-sound-select" class="form-select">
+              <option value="celestial">🎵 Celestial Chime (Ambient)</option>
+              <option value="pulse">⚡ Digital Pulse (Synth)</option>
+              <option value="siren">🚨 Cosmic Siren (Modern)</option>
+              <option value="sunrise">🌅 Sunrise Gentle (Calm)</option>
+              <option value="classic">🔔 Classic Twin Bell (Mechanical)</option>
+            </select>
+            <button type="button" class="btn-icon-test" id="test-sound-btn" title="Preview Sound">
+              <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Snooze Interval -->
+        <div class="form-group">
+          <label for="alarm-snooze-select">Snooze Duration</label>
+          <select id="alarm-snooze-select" class="form-select">
+            <option value="5">5 Minutes</option>
+            <option value="10" selected>10 Minutes</option>
+            <option value="15">15 Minutes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="cancel-alarm-btn">Cancel</button>
+        <button type="button" class="btn-primary" id="save-alarm-btn">Save Alarm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Add City Modal for World Clock -->
+  <div class="modal-overlay hidden" id="city-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Add World City</h3>
+        <button class="icon-btn-close" id="close-city-modal-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="city-search-input">Search Major City / Timezone</label>
+          <input type="text" id="city-search-input" class="form-input" placeholder="e.g. Tokyo, London, New York, Paris...">
+        </div>
+
+        <div class="available-cities-list" id="city-options-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Fullscreen Active Alarm Ringing Overlay -->
+  <div class="active-ringing-overlay hidden" id="ringing-screen">
+    <div class="ringing-glow-burst"></div>
+    
+    <div class="ringing-container">
+      <div class="ringing-bell-icon-wrap">
+        <svg class="ringing-bell-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+      </div>
+
+      <div class="ringing-time" id="ringing-time-text">07:00 AM</div>
+      <div class="ringing-label" id="ringing-label-text">Morning Workout</div>
+
+      <div class="ringing-actions">
+        <button class="btn-snooze" id="ringing-snooze-btn">
+          <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Snooze (<span id="snooze-duration-text">10m</span>)
+        </button>
+        <button class="btn-dismiss" id="ringing-dismiss-btn">
+          <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
