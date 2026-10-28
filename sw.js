@@ -1,8 +1,9 @@
 // ChronoSync Service Worker
-const CACHE_NAME = 'chronosync-v1';
+const CACHE_NAME = 'chronosync-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './offline.html',
   './style.css',
   './app.js',
   './manifest.json',
@@ -10,8 +11,8 @@ const ASSETS_TO_CACHE = [
   './icon-512.png',
   './maskable-icon-192.png',
   './maskable-icon-512.png',
-  './icon-192.jpg',
-  './icon-512.jpg'
+  './screenshot-mobile.png',
+  './screenshot-desktop.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -37,18 +38,20 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
       return fetch(event.request).then((networkResponse) => {
-        // Cache new static resources if valid
         if (
-          event.request.method === 'GET' &&
           networkResponse &&
           networkResponse.status === 200 &&
-          (event.request.url.startsWith(self.location.origin) || event.request.url.includes('fonts.googleapis.com') || event.request.url.includes('fonts.gstatic.com'))
+          (event.request.url.startsWith(self.location.origin) ||
+           event.request.url.includes('fonts.googleapis.com') ||
+           event.request.url.includes('fonts.gstatic.com'))
         ) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -57,8 +60,10 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        // Offline fallback
-        return caches.match('./index.html');
+        // Fallback to offline page for navigation requests
+        if (event.request.mode === 'navigate') {
+          return caches.match('./offline.html');
+        }
       });
     })
   );
