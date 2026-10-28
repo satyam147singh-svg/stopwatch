@@ -1,5 +1,5 @@
 // ChronoSync Service Worker
-const CACHE_NAME = 'chronosync-v2';
+const CACHE_NAME = 'chronosync-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

@@ -1610,3 +1610,30 @@ input:checked + .slider:before {
     box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
   }
 }
+
+/* App Footer / Credits */
+.app-credit-footer {
+  text-align: center;
+  padding: 24px 16px 12px;
+  margin-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.copyright-text {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+  margin-bottom: 5px;
+}
+
+.developer-text {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.developer-name {
+  color: var(--accent-primary);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--accent-glow);
+}
